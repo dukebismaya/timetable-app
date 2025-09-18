@@ -47,6 +47,21 @@ function getDayNameFromDate(date = new Date()) {
 	return dayNames[date.getDay()];
 }
 
+// Ensure the day dropdown points to today if available (fallback to first option)
+function setDaySelectToToday() {
+	const select = document.getElementById("daySelect");
+	if (!select) return;
+	const today = getDayNameFromDate().toLowerCase();
+	const options = Array.from(select.options || []);
+	const exists = options.find(o => o.value.toLowerCase() === today);
+	if (exists) {
+		select.value = today;
+	} else if (options.length) {
+		// fallback (e.g., Sunday not present)
+		select.value = options[0].value;
+	}
+}
+
 // ------------------------------
 // Data Fetching
 // ------------------------------
@@ -105,6 +120,69 @@ function findCurrentClass(dayName, minutes) {
 	return null;
 }
 
+// Get upcoming classes for the rest of the day up to a cutoff (default 17:30)
+function getUpcomingClasses(dayName, minutes, cutoff = 17 * 60 + 30) {
+	if (!TIMETABLE) return [];
+	const key = dayName.toLowerCase();
+	const dayArr = TIMETABLE[key];
+	if (!Array.isArray(dayArr)) return [];
+	const out = [];
+	for (const item of dayArr) {
+		const { start } = parseRange(item.time);
+		const subj = (item.subject || '').trim().toLowerCase();
+		const isReal = subj && subj !== '-' && subj !== '—' && !subj.includes('no class') && !subj.includes('free');
+		if (isReal && start > minutes && start <= cutoff) out.push({ ...item, start });
+	}
+	out.sort((a, b) => a.start - b.start);
+	return out;
+}
+
+// Find the next slot after the current time and determine if a class exists there
+function getNextClassInfo(dayName, minutes) {
+	if (!TIMETABLE) return { type: 'none' };
+	const key = dayName.toLowerCase();
+	const list = TIMETABLE[key];
+	if (!Array.isArray(list)) return { type: 'none' };
+	let nextSlot = null, nextStart = null;
+	for (const slot of SLOTS) {
+		const { start } = parseRange(slot);
+		if (start > minutes) { nextSlot = slot; nextStart = start; break; }
+	}
+	if (!nextSlot) return { type: 'none' };
+	const match = list.find(x => x.time === nextSlot);
+	if (!match) return { type: 'free', start: nextStart, slot: nextSlot };
+	const subj = (match.subject || '').trim().toLowerCase();
+	if (subj === '-' || subj === '—' || subj.includes('no class')) {
+		return { type: 'free', start: nextStart, slot: nextSlot };
+	}
+	return { type: 'class', start: nextStart, slot: nextSlot, item: match };
+}
+
+function formatDelta(mins) {
+	const h = Math.floor(mins / 60);
+	const m = mins % 60;
+	if (h && m) return `${h}h ${m}m`;
+	if (h) return `${h}h`;
+	return `${m}m`;
+}
+
+// Get the end time (in minutes) of the last real class today; returns null if none
+function getTodayLastClassEnd(dayName) {
+	if (!TIMETABLE) return null;
+	const key = dayName.toLowerCase();
+	const list = TIMETABLE[key];
+	if (!Array.isArray(list) || !list.length) return null;
+	let last = null;
+	for (const item of list) {
+		const subj = (item.subject || '').trim().toLowerCase();
+		if (subj && subj !== '-' && subj !== '—' && !subj.includes('no class')) {
+			const { end } = parseRange(item.time);
+			if (last == null || end > last) last = end;
+		}
+	}
+	return last;
+}
+
 // ------------------------------
 // Rendering Helpers
 // ------------------------------
@@ -149,9 +227,23 @@ function renderNowView() {
 		content = `No timetable for ${dayName}.`;
 	} else {
 		const current = findCurrentClass(dayName, minutes);
+		// Badge row with next info
+		const nextInfo = getNextClassInfo(dayName, minutes);
+		const rowTop = h('div', 'flex items-center justify-between');
+		rowTop.append(h('div', 'text-sm text-gray-500', `${dayName}`));
+		const badge = h('span', 'ml-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium');
+		if (nextInfo.type === 'class') {
+			const delta = Math.max(0, nextInfo.start - minutes);
+			badge.className += ' bg-cyan-600 text-white dark:bg-cyan-500';
+			badge.textContent = `Next in ${formatDelta(delta)}`;
+		} else if (nextInfo.type === 'free' || nextInfo.type === 'none') {
+			badge.className += ' bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200';
+			badge.textContent = 'No class next';
+		}
+		rowTop.append(badge);
+		card.append(rowTop);
 		if (current) {
 			card.append(
-				h("div", "text-sm text-gray-500", `${dayName}`),
 				h("div", "text-lg font-semibold", `${current.subject}`),
 				h(
 					"div",
@@ -166,8 +258,76 @@ function renderNowView() {
 		}
 	}
 
-	const wrap = h("div");
+	const wrap = h("div", "space-y-3");
 	if (content) wrap.append(h("p", "text-sm text-gray-600 dark:text-gray-400", content));
+
+	// Upcoming card with smart end-of-day detection + 17:30 fallback
+	const cutoff = 17 * 60 + 30;
+	if (TIMETABLE && TIMETABLE[dayName.toLowerCase()]) {
+		// If it's after 17:30, always done for the day
+		if (minutes >= cutoff) {
+			const doneCard = h(
+				"div",
+				"rounded-2xl p-4 shadow-sm transition-all duration-300 ease-out bg-white/90 border border-gray-200 dark:bg-slate-800/90 dark:border-gray-700"
+			);
+			doneCard.append(
+				h("div", "text-sm font-semibold mb-1", "All done for today"),
+				h("p", "text-sm text-gray-600 dark:text-gray-300", "No more classes — enjoy your day!")
+			);
+			wrap.append(doneCard);
+		} else {
+			const lastEnd = getTodayLastClassEnd(dayName);
+			if (lastEnd == null || minutes >= lastEnd) {
+				const doneCard = h(
+					"div",
+					"rounded-2xl p-4 shadow-sm transition-all duration-300 ease-out bg-white/90 border border-gray-200 dark:bg-slate-800/90 dark:border-gray-700"
+				);
+				doneCard.append(
+					h("div", "text-sm font-semibold mb-1", lastEnd == null ? "No classes today" : "All done for today"),
+					h("p", "text-sm text-gray-600 dark:text-gray-300", "No more classes — enjoy your day!")
+				);
+				wrap.append(doneCard);
+			} else {
+				const until = Math.min(cutoff, lastEnd);
+				const upcoming = getUpcomingClasses(dayName, minutes, until);
+				if (upcoming.length === 0) {
+					const doneCard = h(
+						"div",
+						"rounded-2xl p-4 shadow-sm transition-all duration-300 ease-out bg-white/90 border border-gray-200 dark:bg-slate-800/90 dark:border-gray-700"
+					);
+					doneCard.append(
+						h("div", "text-sm font-semibold mb-1", "All done for today"),
+						h("p", "text-sm text-gray-600 dark:text-gray-300", "No more classes — enjoy your day!")
+					);
+					wrap.append(doneCard);
+				} else {
+					const upCard = h(
+						"div",
+						"rounded-2xl p-4 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 ease-out bg-white/90 border border-gray-200 dark:bg-slate-800/90 dark:border-gray-700"
+					);
+					upCard.append(h("div", "text-sm font-semibold mb-2", "Upcoming Today"));
+					const ul = h("ul", "space-y-2");
+					for (const item of upcoming) {
+						const li = h(
+							"li",
+							"flex items-center justify-between gap-3 p-2 rounded-xl bg-white/70 dark:bg-gray-800/60 border border-gray-200/60 dark:border-gray-700"
+						);
+						const left = h("div");
+						left.append(
+							h("div", "text-sm font-medium", item.subject),
+							h("div", "text-xs text-gray-500 dark:text-gray-400", `${item.room} • ${item.faculty}`)
+						);
+						const right = h("div", "text-xs font-mono text-gray-600 dark:text-gray-300 shrink-0", item.time);
+						li.append(left, right);
+						ul.append(li);
+					}
+					upCard.append(ul);
+					wrap.append(upCard);
+				}
+			}
+		}
+	}
+
 	container.append(heading, card, wrap);
 	// subtle pulse ring to indicate refresh
 	try {
@@ -349,6 +509,7 @@ async function init() {
 		renderNowView();
 	});
 	btnDaily?.addEventListener("click", () => {
+		setDaySelectToToday();
 		showView("dailyView");
 		renderDailyView();
 	});
@@ -364,13 +525,15 @@ async function init() {
 		renderDailyView(name);
 	});
 
+	// Preselect today's day in dropdown before loading data
+	setDaySelectToToday();
 	await loadTimetable();
 
 	// Initial render: Now view
 	showView("nowView");
 	renderNowView();
 
-	// Pre-render other views to avoid blank on first switch
+	// Pre-render other views to avoid blank on first switch (Daily uses the preselected today)
 	renderDailyView();
 	renderWeeklyView();
 
