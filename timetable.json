@@ -1,0 +1,62 @@
+{
+	"monday": [
+		{ "time": "09:30-10:30", "subject": "Data Structures (PR)", "room": "AR-204", "faculty": "Rosleen Anjum" },
+		{ "time": "10:30-11:30", "subject": "Data Structures (PR)", "room": "AR-204", "faculty": "Rosleen Anjum" },
+		{ "time": "11:30-12:30", "subject": "—", "room": "—", "faculty": "—" },
+		{ "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
+		{ "time": "13:30-14:30", "subject": "Data Structures (PP)", "room": "AR-213", "faculty": "Rosleen Anjum" },
+		{ "time": "14:30-15:30", "subject": "Data Structures (PP)", "room": "AR-213", "faculty": "Rosleen Anjum" },
+		{ "time": "15:30-16:30", "subject": "Job Readiness (PR)", "room": "AR-215", "faculty": "Mr. Amrit" },
+		{ "time": "16:30-17:30", "subject": "Java Programming (TUT)", "room": "AR-306", "faculty": "Sanghamitra Panda" }
+	],
+	"tuesday": [
+		{ "time": "09:30-10:30", "subject": "Java Programming (PP)", "room": "AR-306", "faculty": "Sanghamitra Panda" },
+		{ "time": "10:30-11:30", "subject": "Data Structures (PR)", "room": "AR-204", "faculty": "Rosleen Anjum" },
+		{ "time": "11:30-12:30", "subject": "Data Structures (PR)", "room": "AR-204", "faculty": "Rosleen Anjum" },
+		{ "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
+		{ "time": "13:30-14:30", "subject": "Machine Learning (PR)", "room": "AR-305", "faculty": "Sanjib Kumar Naik" },
+		{ "time": "14:30-15:30", "subject": "Machine Learning (PR)", "room": "AR-305", "faculty": "Sanjib Kumar Naik" },
+		{ "time": "15:30-16:30", "subject": "Java Programming (PR)", "room": "AR-204", "faculty": "Sanghamitra Panda" },
+		{ "time": "16:30-17:30", "subject": "Java Programming (PR)", "room": "AR-204", "faculty": "Sanghamitra Panda" }
+	],
+	"wednesday": [
+		{ "time": "09:30-10:30", "subject": "Machine Learning (TUT)", "room": "AR-212", "faculty": "Sanjib Kumar Naik" },
+		{ "time": "10:30-11:30", "subject": "Machine Learning (PR)", "room": "AR-212", "faculty": "Sanjib Kumar Naik" },
+		{ "time": "11:30-12:30", "subject": "Java Programming (PP)", "room": "AR-306", "faculty": "Sanghamitra Panda" },
+		{ "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
+		{ "time": "13:30-14:30", "subject": "—", "room": "—", "faculty": "—" },
+		{ "time": "14:30-15:30", "subject": "—", "room": "—", "faculty": "—" },
+		{ "time": "15:30-16:30", "subject": "Skill Course (PR)", "room": "--(Subject Specific)--", "faculty": "N/A" },
+		{ "time": "16:30-17:30", "subject": "Skill Course (PR)", "room": "--(Subject Specific)--", "faculty": "N/A" }
+	],
+	"thursday": [
+		{ "time": "09:30-10:30", "subject": "Cloud Practioner AWS (PR)", "room": "AR-306", "faculty": "Gourab Kumar Dash" },
+		{ "time": "10:30-11:30", "subject": "Cloud Practioner AWS (PR)", "room": "AR-306", "faculty": "Gourab Kumar Dash" },
+		{ "time": "11:30-12:30", "subject": "—", "room": "—", "faculty": "—" },
+		{ "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
+		{ "time": "13:30-14:30", "subject": "Java Programming (PR)", "room": "AR-204", "faculty": "Sanghamitra Panda" },
+		{ "time": "14:30-15:30", "subject": "Java Programming (PR)", "room": "AR-204", "faculty": "Sanghamitra Panda" },
+		{ "time": "15:30-16:30", "subject": "Job Readiness (PR)", "room": "AR-203", "faculty": "Tapan Kumar Panda" },
+		{ "time": "16:30-17:30", "subject": "—", "room": "—", "faculty": "—" }
+	],
+	"friday": [
+		{ "time": "09:30-10:30", "subject": "Cloud Practioner AWS (PP)", "room": "AR-306", "faculty": "Gourab Kumar Dash" },
+		{ "time": "10:30-11:30", "subject": "Job Readiness (PR)", "room": "AR-201", "faculty": "Tapan Kumar Panda" },
+		{ "time": "11:30-12:30", "subject": "Job Readiness (PR)", "room": "AR-210", "faculty": "Mr. Amrit" },
+		{ "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
+		{ "time": "13:30-14:30", "subject": "—", "room": "—", "faculty": "—" },
+		{ "time": "14:30-15:30", "subject": "Machine Learning (PP)", "room": "AR-215", "faculty": "Sanjib Kumar Naik" },
+		{ "time": "15:30-16:30", "subject": "Skill Course (PR)", "room": "--(Subject Specific)--", "faculty": "N/A" },
+		{ "time": "16:30-17:30", "subject": "Skill Course (PR)", "room": "--(Subject Specific)--", "faculty": "N/A" }
+	],
+	"saturday": [
+		{ "time": "09:30-10:30", "subject": "Java Programming (TUT)", "room": "AR-306", "faculty": "Sanghamitra Panda" },
+		{ "time": "10:30-11:30", "subject": "Data Structures (PR)", "room": "AR-204", "faculty": "Rosleen Anjum" },
+		{ "time": "11:30-12:30", "subject": "—", "room": "—", "faculty": "—" },
+		{ "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
+		{ "time": "13:30-14:30", "subject": "Skill Course (TUT)", "room": "--(Subject Specific)--", "faculty": "N/A" },
+		{ "time": "14:30-15:30", "subject": "Skill Course (TUT)", "room": "--(Subject Specific)--", "faculty": "N/A" },
+		{ "time": "15:30-16:30", "subject": "—", "room": "—", "faculty": "—" },
+		{ "time": "16:30-17:30", "subject": "—", "room": "—", "faculty": "—" }
+	]
+}
