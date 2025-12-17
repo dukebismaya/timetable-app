@@ -231,13 +231,13 @@ function renderNowView() {
 		const nextInfo = getNextClassInfo(dayName, minutes);
 		const rowTop = h('div', 'flex items-center justify-between');
 		rowTop.append(h('div', 'text-sm text-gray-500', `${dayName}`));
-		const badge = h('span', 'ml-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium');
+		const badge = h('span', 'ml-2 badge');
 		if (nextInfo.type === 'class') {
 			const delta = Math.max(0, nextInfo.start - minutes);
-			badge.className += ' bg-cyan-600 text-white dark:bg-cyan-500';
+			badge.classList.add('badge-primary');
 			badge.textContent = `Next in ${formatDelta(delta)}`;
 		} else if (nextInfo.type === 'free' || nextInfo.type === 'none') {
-			badge.className += ' bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200';
+			badge.classList.add('badge-neutral');
 			badge.textContent = 'No class next';
 		}
 		rowTop.append(badge);
@@ -375,7 +375,9 @@ function renderDailyView(dayName) {
 		if (isToday) {
 			const { start, end } = parseRange(slot);
 			if (nowMins >= start && nowMins < end) {
-				li.classList.add("ring", "ring-indigo-400/40", "bg-indigo-50/50", "dark:bg-gray-700/40");
+				li.style.borderColor = 'var(--accent-primary)';
+				li.style.boxShadow = '0 0 15px var(--accent-glow)';
+				li.style.background = 'var(--accent-glow)';
 			}
 		}
 		if (match) {
@@ -459,23 +461,58 @@ function renderWeeklyView() {
 // Navigation & Initialization
 // ------------------------------
 
+// Track current view for directional transitions
+let currentViewIndex = 0;
+const viewOrder = ["nowView", "dailyView", "weeklyView"];
+
 function showView(targetId) {
 	const ids = ["nowView", "dailyView", "weeklyView"];
+	const targetIndex = viewOrder.indexOf(targetId);
+	const direction = targetIndex > currentViewIndex ? 'left' : 'right';
+	
 	for (const id of ids) {
 		const el = document.getElementById(id);
 		if (!el) continue;
+		
+		// Remove any existing animation classes
+		el.classList.remove(
+			'view-entering', 'view-exiting',
+			'view-slide-left', 'view-slide-right',
+			'view-exit-left', 'view-exit-right'
+		);
+		
 		if (id === targetId) {
 			el.classList.remove("hidden");
+			el.classList.remove("opacity-0");
+			
+			// Apply directional entrance animation
 			requestAnimationFrame(() => {
-				el.classList.remove("opacity-0");
 				el.classList.add("opacity-100");
+				if (direction === 'left') {
+					el.classList.add('view-slide-left');
+				} else {
+					el.classList.add('view-slide-right');
+				}
 			});
-		} else {
+		} else if (!el.classList.contains("hidden")) {
+			// Apply exit animation to currently visible view
 			el.classList.remove("opacity-100");
-			el.classList.add("opacity-0");
-			setTimeout(() => el.classList.add("hidden"), 400);
+			
+			if (direction === 'left') {
+				el.classList.add('view-exit-left');
+			} else {
+				el.classList.add('view-exit-right');
+			}
+			
+			setTimeout(() => {
+				el.classList.add("hidden");
+				el.classList.add("opacity-0");
+				el.classList.remove('view-exit-left', 'view-exit-right');
+			}, 350);
 		}
 	}
+	
+	currentViewIndex = targetIndex;
 
 	// Set button active state
 	const map = {
@@ -488,9 +525,11 @@ function showView(targetId) {
 		if (!btn) return;
 		if (viewId === targetId) {
 			btn.style.setProperty('--slide-origin', 'left');
-			btn.classList.add("is-active");
+			btn.classList.add("active"); // Support new class
+			btn.classList.add("is-active"); // Support legacy class
 			btn.setAttribute("aria-current", "page");
 		} else {
+			btn.classList.remove("active");
 			btn.classList.remove("is-active");
 			btn.removeAttribute("aria-current");
 		}
@@ -552,44 +591,16 @@ async function init() {
 		themeToggle.checked = document.documentElement.classList.contains("dark");
 		themeToggle.addEventListener("change", (e) => {
 			const isDark = e.target.checked;
-			document.documentElement.classList.toggle("dark", isDark);
+			
+			// Premium theme transition effect
+			performPremiumThemeTransition(isDark, e.target);
+			
 			try { localStorage.setItem("timetable-theme", isDark ? "dark" : "light"); } catch { }
 		});
 	}
 
-	// 3D tilt on nav buttons (lightweight parallax)
-	const navButtons = [document.getElementById('btnNow'), document.getElementById('btnDaily'), document.getElementById('btnWeekly')].filter(Boolean);
-	let raf = null;
-	const handle = (btn, e) => {
-		const rect = btn.getBoundingClientRect();
-		const x = (e.clientX - rect.left) / rect.width; // 0..1
-		const y = (e.clientY - rect.top) / rect.height; // 0..1
-		const rx = (0.5 - y) * 8; // max 8deg tilt
-		const ry = (x - 0.5) * 12;
-		const face = btn.querySelector('.btn-face') || btn;
-		face.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
-		face.style.transition = 'transform 60ms linear';
-		btn.style.setProperty('--mx', `${(x * 100).toFixed(2)}%`);
-		btn.style.setProperty('--my', `${(y * 100).toFixed(2)}%`);
-	};
 	// Start background animation once
 	startRipples();
-	navButtons.forEach(btn => {
-		btn.addEventListener('mousemove', (e) => {
-			if (raf) cancelAnimationFrame(raf);
-			raf = requestAnimationFrame(() => handle(btn, e));
-		});
-		btn.addEventListener('mouseleave', () => {
-			const face = btn.querySelector('.btn-face') || btn;
-			face.style.transition = 'transform 300ms ease';
-			face.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) translateZ(0)';
-			btn.style.setProperty('--mx', '50%');
-			btn.style.setProperty('--my', '50%');
-		});
-	});
-
-	window.addEventListener('resize', () => updateNavIndicator());
-	updateNavIndicator();
 }
 
 // Kickoff after DOM ready
@@ -664,7 +675,67 @@ function applySavedTheme() {
 	} catch { }
 }
 
-// icon text no longer used (CSS toggle has its own icon)
+// Premium theme transition with ripple and glow effects
+function performPremiumThemeTransition(isDark, toggleElement) {
+	// Get toggle position for ripple origin
+	const rect = toggleElement.getBoundingClientRect();
+	const centerX = rect.left + rect.width / 2;
+	const centerY = rect.top + rect.height / 2;
+	
+	// Calculate ripple size (needs to cover entire viewport)
+	const maxDimension = Math.max(
+		Math.hypot(centerX, centerY),
+		Math.hypot(window.innerWidth - centerX, centerY),
+		Math.hypot(centerX, window.innerHeight - centerY),
+		Math.hypot(window.innerWidth - centerX, window.innerHeight - centerY)
+	);
+	
+	// Create glow effect
+	const glow = document.createElement('div');
+	glow.className = 'theme-glow';
+	glow.style.setProperty('--glow-x', `${(centerX / window.innerWidth) * 100}%`);
+	glow.style.setProperty('--glow-y', `${(centerY / window.innerHeight) * 100}%`);
+	document.body.appendChild(glow);
+	
+	// Create ripple
+	const ripple = document.createElement('div');
+	ripple.className = 'theme-ripple';
+	ripple.style.width = ripple.style.height = `${maxDimension}px`;
+	ripple.style.left = `${centerX - maxDimension / 2}px`;
+	ripple.style.top = `${centerY - maxDimension / 2}px`;
+	ripple.style.background = isDark 
+		? 'radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%)'
+		: 'radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, transparent 70%)';
+	document.body.appendChild(ripple);
+	
+	// Create morph overlay
+	const overlay = document.createElement('div');
+	overlay.className = 'theme-morph-overlay';
+	document.body.appendChild(overlay);
+	
+	// Add transitioning class for staggered children
+	document.body.classList.add('theme-transitioning');
+	
+	// Trigger animations
+	requestAnimationFrame(() => {
+		glow.classList.add('pulse');
+		ripple.classList.add('expanding');
+		overlay.classList.add('active');
+		
+		// Apply theme change after a short delay for visual effect
+		setTimeout(() => {
+			document.documentElement.classList.toggle("dark", isDark);
+		}, 150);
+	});
+	
+	// Cleanup
+	setTimeout(() => {
+		glow.remove();
+		ripple.remove();
+		overlay.remove();
+		document.body.classList.remove('theme-transitioning');
+	}, 800);
+}
 
 // ------------------------------
 // Nav indicator helper
@@ -697,7 +768,7 @@ function updateNavIndicator() {
 }
 
 // ------------------------------
-// Background ripples (canvas)
+// Background Network Animation (canvas)
 // ------------------------------
 function startRipples() {
 	const canvas = document.getElementById('bgRipples');
@@ -709,164 +780,89 @@ function startRipples() {
 	const state = {
 		w: 0,
 		h: 0,
-		dpr: Math.max(1, Math.min(2, window.devicePixelRatio || 1)),
-		sparkles: [],
-		bubbles: [],
-		parallax: { x: 0.5, y: 0.5 },
-		sprites: { sparkle: null, bubble: null }
+		points: [],
+		target: { x: 0, y: 0 },
 	};
 
 	function resize() {
 		const { innerWidth: w, innerHeight: h } = window;
 		state.w = w; state.h = h;
-		canvas.style.width = w + 'px';
-		canvas.style.height = h + 'px';
-		canvas.width = Math.floor(w * state.dpr);
-		canvas.height = Math.floor(h * state.dpr);
-		ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
-		seed();
+		canvas.width = w;
+		canvas.height = h;
+		initPoints();
 	}
 
-	function makeSparkleSprite() {
-		const s = 64;
-		const off = document.createElement('canvas');
-		off.width = off.height = s;
-		const c = off.getContext('2d');
-		const g = c.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
-		g.addColorStop(0, 'rgba(255,255,255,0.75)');
-		g.addColorStop(0.4, 'rgba(180,240,255,0.35)');
-		g.addColorStop(1, 'rgba(255,255,255,0)');
-		c.fillStyle = g;
-		c.beginPath(); c.arc(s / 2, s / 2, s / 2, 0, Math.PI * 2); c.fill();
-		// cross glints
-		c.strokeStyle = 'rgba(255,255,255,0.5)'; c.lineWidth = 1;
-		c.beginPath(); c.moveTo(8, s / 2); c.lineTo(s - 8, s / 2); c.stroke();
-		c.beginPath(); c.moveTo(s / 2, 8); c.lineTo(s / 2, s - 8); c.stroke();
-		return off;
-	}
-
-	function makeBubbleSprite() {
-		const s = 128;
-		const off = document.createElement('canvas');
-		off.width = off.height = s;
-		const c = off.getContext('2d');
-		const g = c.createRadialGradient(s / 2, s / 2, s * 0.1, s / 2, s / 2, s * 0.48);
-		g.addColorStop(0, 'rgba(160,220,255,0.08)');
-		g.addColorStop(0.6, 'rgba(120,200,255,0.05)');
-		g.addColorStop(1, 'rgba(0,0,0,0)');
-		c.fillStyle = g;
-		c.beginPath(); c.arc(s / 2, s / 2, s * 0.48, 0, Math.PI * 2); c.fill();
-		// highlight
-		c.beginPath();
-		c.strokeStyle = 'rgba(255,255,255,0.12)'; c.lineWidth = 2;
-		c.arc(s * 0.38, s * 0.38, s * 0.18, Math.PI * 0.2, Math.PI * 1.4);
-		c.stroke();
-		return off;
-	}
-
-	function seed() {
-		// counts scale mildly with area
-		const areaK = Math.min(1.6, Math.max(0.6, (state.w * state.h) / (1440 * 900)));
-		const Ns = Math.round(28 * areaK);
-		const Nb = Math.round(12 * areaK);
-
-		if (!state.sprites.sparkle) state.sprites.sparkle = makeSparkleSprite();
-		if (!state.sprites.bubble) state.sprites.bubble = makeBubbleSprite();
-
-		state.sparkles = new Array(Ns).fill(0).map(() => {
-			const size = 6 + Math.random() * 10;
-			return {
+	function initPoints() {
+		const count = Math.floor((state.w * state.h) / 15000); // Sparse density
+		state.points = [];
+		for (let i = 0; i < count; i++) {
+			state.points.push({
 				x: Math.random() * state.w,
 				y: Math.random() * state.h,
-				vx: (Math.random() * 0.4 - 0.2),
-				vy: (Math.random() * 0.4 - 0.2),
-				size,
-				a: 0.08 + Math.random() * 0.12,
-				tw: Math.random() * Math.PI * 2
-			};
-		});
-
-		state.bubbles = new Array(Nb).fill(0).map(() => {
-			const r = 30 + Math.random() * 70;
-			return {
-				x: Math.random() * state.w,
-				y: Math.random() * state.h,
-				r,
-				vy: - (0.08 + Math.random() * 0.2),
-				swayA: Math.random() * Math.PI * 2,
-				swayV: 0.004 + Math.random() * 0.008,
-				swayAmp: 8 + Math.random() * 16,
-				a: 0.10 + Math.random() * 0.15
-			};
-		});
+				vx: (Math.random() - 0.5) * 0.2, // Slower, smoother movement
+				vy: (Math.random() - 0.5) * 0.2,
+				size: Math.random() * 1.5 + 0.5 // Smaller, finer particles
+			});
+		}
 	}
 
-	function step(t) {
+	function step() {
 		if (!running) return;
+		
+		const isDark = document.documentElement.classList.contains('dark');
 		ctx.clearRect(0, 0, state.w, state.h);
 
-		const px = (state.parallax.x - 0.5);
-		const py = (state.parallax.y - 0.5);
+		// Theme-aware colors - Sleek & Subtle
+		const pointColor = isDark ? 'rgba(6, 182, 212, 0.3)' : 'rgba(14, 165, 233, 0.25)'; 
+		const lineColor = isDark ? 'rgba(6, 182, 212, 0.08)' : 'rgba(14, 165, 233, 0.08)';
 
-		// Sparkles (additive blend)
-		ctx.globalCompositeOperation = 'lighter';
-		for (const s of state.sparkles) {
-			s.x += s.vx + px * 0.6;
-			s.y += s.vy + py * 0.6;
-			s.tw += 0.05;
-			const alpha = s.a * (0.6 + 0.4 * Math.sin(s.tw));
-			// wrap
-			if (s.x < -20) s.x = state.w + 20;
-			if (s.x > state.w + 20) s.x = -20;
-			if (s.y < -20) s.y = state.h + 20;
-			if (s.y > state.h + 20) s.y = -20;
-			ctx.globalAlpha = alpha;
-			const sz = s.size * (0.9 + 0.2 * Math.sin(s.tw * 0.7));
-			ctx.drawImage(state.sprites.sparkle, s.x - sz, s.y - sz, sz * 2, sz * 2);
-		}
+		ctx.fillStyle = pointColor;
+		ctx.strokeStyle = lineColor;
+		ctx.lineWidth = 1;
 
-		// Bubbles (source-over)
-		ctx.globalCompositeOperation = 'source-over';
-		for (const b of state.bubbles) {
-			b.y += b.vy;
-			b.swayA += b.swayV;
-			const ox = Math.sin(b.swayA) * b.swayAmp + px * 6;
-			const oy = py * 6;
-			if (b.y + b.r < -10) {
-				b.y = state.h + b.r + 10;
-				b.x = Math.random() * state.w;
+		for (let i = 0; i < state.points.length; i++) {
+			const p = state.points[i];
+			
+			// Move
+			p.x += p.vx;
+			p.y += p.vy;
+
+			// Bounce
+			if (p.x < 0 || p.x > state.w) p.vx *= -1;
+			if (p.y < 0 || p.y > state.h) p.vy *= -1;
+
+			// Draw point
+			ctx.beginPath();
+			ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+			ctx.fill();
+
+			// Connect
+			for (let j = i + 1; j < state.points.length; j++) {
+				const p2 = state.points[j];
+				const dx = p.x - p2.x;
+				const dy = p.y - p2.y;
+				const dist = dx * dx + dy * dy;
+
+				if (dist < 20000) { // Connection distance
+					ctx.beginPath();
+					ctx.moveTo(p.x, p.y);
+					ctx.lineTo(p2.x, p2.y);
+					ctx.stroke();
+				}
 			}
-			ctx.globalAlpha = b.a;
-			const sz = b.r * 2;
-			ctx.drawImage(state.sprites.bubble, b.x + ox - b.r, b.y + oy - b.r, sz, sz);
 		}
-		ctx.globalAlpha = 1;
 
 		rafId = requestAnimationFrame(step);
-	}
-
-	const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	function onPointer(e) {
-		const x = Math.max(0, Math.min(1, e.clientX / state.w));
-		const y = Math.max(0, Math.min(1, e.clientY / state.h));
-		state.parallax.x = x; state.parallax.y = y;
 	}
 
 	resize();
-	if (!prefersReduced) {
-		rafId = requestAnimationFrame(step);
-		window.addEventListener('pointermove', onPointer, { passive: true });
-	} else {
-		// still seed for static frame
-		seed();
-		step();
-	}
+	rafId = requestAnimationFrame(step);
 	window.addEventListener('resize', resize);
 
 	return () => {
 		running = false;
 		if (rafId) cancelAnimationFrame(rafId);
-		window.removeEventListener('pointermove', onPointer);
 		window.removeEventListener('resize', resize);
 	};
 }
+
