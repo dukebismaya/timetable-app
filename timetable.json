@@ -1,31 +1,31 @@
 {
     "monday": [
         { "time": "09:30-10:30", "subject": "Probability & Statistics (PP)", "room": "218", "faculty": "Mr. Bhirab ku Maji" },
-        { "time": "10:30-11:30", "subject": "Relational and Distributed Databases (PR)", "room": "304", "faculty": "Mrs. Roseleen Anjum" },
-        { "time": "11:30-12:30", "subject": "Relational and Distributed Databases (PR)", "room": "304", "faculty": "Mrs. Roseleen Anjum" },
+        { "time": "10:30-11:30", "subject": "Relational and Distributed Databases (PR) [CUCS1005]", "room": "304", "faculty": "Mrs. Roseleen Anjum" },
+        { "time": "11:30-12:30", "subject": "Relational and Distributed Databases (PR) [CUCS1005]", "room": "304", "faculty": "Mrs. Roseleen Anjum" },
         { "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
-        { "time": "13:30-14:30", "subject": "Design and Analysis of Algorithms (PP)", "room": "308", "faculty": "Mr. Chitta Ranjan Behera" },
-        { "time": "14:30-15:30", "subject": "Relational and Distributed Databases (PP)", "room": "218", "faculty": "Mrs. Roseleen Anjum" },
-        { "time": "15:30-16:30", "subject": "Design and Analysis of Algorithms (PR)", "room": "215", "faculty": "Mr. Chitta Ranjan Behera" },
-        { "time": "16:30-17:30", "subject": "Design and Analysis of Algorithms (PR)", "room": "215", "faculty": "Mr. Chitta Ranjan Behera" }
+        { "time": "13:30-14:30", "subject": "Design and Analysis of Algorithms (PP) [CUCS1003]", "room": "308", "faculty": "Mr. Chitta Ranjan Behera" },
+        { "time": "14:30-15:30", "subject": "Relational and Distributed Databases (PP) [CUCS1005]", "room": "218", "faculty": "Mrs. Roseleen Anjum" },
+        { "time": "15:30-16:30", "subject": "Design and Analysis of Algorithms (PR) [CUCS1003]", "room": "215", "faculty": "Mr. Chitta Ranjan Behera" },
+        { "time": "16:30-17:30", "subject": "Design and Analysis of Algorithms (PR) [CUCS1003]", "room": "215", "faculty": "Mr. Chitta Ranjan Behera" }
     ],
     "tuesday": [
         { "time": "09:30-10:30", "subject": "—", "room": "—", "faculty": "—" },
         { "time": "10:30-11:30", "subject": "Job Readiness (PR)", "room": "—", "faculty": "Placement Team" },
         { "time": "11:30-12:30", "subject": "Job Readiness (PR)", "room": "—", "faculty": "Placement Team" },
         { "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
-        { "time": "13:30-14:30", "subject": "Design and Analysis of Algorithms (PR)", "room": "221", "faculty": "Mr. Chitta Ranjan Behera" },
-        { "time": "14:30-15:30", "subject": "Design and Analysis of Algorithms (PR)", "room": "221", "faculty": "Mr. Chitta Ranjan Behera" },
-        { "time": "15:30-16:30", "subject": "Software Engineering and Testing (PR)", "room": "213", "faculty": "Ms. Swayansudha Sahoo" },
-        { "time": "16:30-17:30", "subject": "Software Engineering and Testing (PR)", "room": "213", "faculty": "Ms. Swayansudha Sahoo" }
+        { "time": "13:30-14:30", "subject": "Design and Analysis of Algorithms (PR) [CUCS1003]", "room": "221", "faculty": "Mr. Chitta Ranjan Behera" },
+        { "time": "14:30-15:30", "subject": "Design and Analysis of Algorithms (PR) [CUCS1003]", "room": "221", "faculty": "Mr. Chitta Ranjan Behera" },
+        { "time": "15:30-16:30", "subject": "Software Engineering and Testing (PR) [CUCS1011]", "room": "213", "faculty": "Ms. Swayansudha Sahoo" },
+        { "time": "16:30-17:30", "subject": "Software Engineering and Testing (PR) [CUCS1011]", "room": "213", "faculty": "Ms. Swayansudha Sahoo" }
     ],
     "wednesday": [
         { "time": "09:30-10:30", "subject": "Probability & Statistics (PP)", "room": "220", "faculty": "Mr. Bhirab ku Maji" },
         { "time": "10:30-11:30", "subject": "—", "room": "—", "faculty": "—" },
-        { "time": "11:30-12:30", "subject": "Relational and Distributed Databases (PR)", "room": "115", "faculty": "Mrs. Roseleen Anjum" },
+        { "time": "11:30-12:30", "subject": "Relational and Distributed Databases (PR) [CUCS1005]", "room": "115", "faculty": "Mrs. Roseleen Anjum" },
         { "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
-        { "time": "13:30-14:30", "subject": "Industrial IOT and Automation (PP)", "room": "308", "faculty": "Mr. Gautam Modak" },
-        { "time": "14:30-15:30", "subject": "Industrial IOT and Automation (PP)", "room": "313", "faculty": "Mr. Gautam Modak" },
+        { "time": "13:30-14:30", "subject": "Industrial IOT and Automation (PP) [CUTM1017]", "room": "308", "faculty": "Mr. Gautam Modak" },
+        { "time": "14:30-15:30", "subject": "Industrial IOT and Automation (PP) [CUTM1017]", "room": "313", "faculty": "Mr. Gautam Modak" },
         { "time": "15:30-16:30", "subject": "Skill Course (PR)", "room": "--(Subject Specific)--", "faculty": "N/A" },
         { "time": "16:30-17:30", "subject": "Skill Course (PR)", "room": "--(Subject Specific)--", "faculty": "N/A" }
     ],
@@ -34,29 +34,29 @@
         { "time": "10:30-11:30", "subject": "—", "room": "—", "faculty": "—" },
         { "time": "11:30-12:30", "subject": "Job Readiness (PR)", "room": "—", "faculty": "Placement Team" },
         { "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
-        { "time": "13:30-14:30", "subject": "Design and Analysis of Algorithms (PP)", "room": "306", "faculty": "Mr. Chitta Ranjan Behera" },
-        { "time": "14:30-15:30", "subject": "Relational and Distributed Databases (PP)", "room": "306", "faculty": "Mrs. Roseleen Anjum" },
-        { "time": "15:30-16:30", "subject": "Software Engineering and Testing (PP)", "room": "216", "faculty": "Ms. Swayansudha Sahoo" },
-        { "time": "16:30-17:30", "subject": "Relational and Distributed Databases (PR)", "room": "216", "faculty": "Mrs. Roseleen Anjum" }
+        { "time": "13:30-14:30", "subject": "Design and Analysis of Algorithms (PP) [CUCS1003]", "room": "306", "faculty": "Mr. Chitta Ranjan Behera" },
+        { "time": "14:30-15:30", "subject": "Relational and Distributed Databases (PP) [CUCS1005]", "room": "306", "faculty": "Mrs. Roseleen Anjum" },
+        { "time": "15:30-16:30", "subject": "Software Engineering and Testing (PP) [CUCS1011]", "room": "216", "faculty": "Ms. Swayansudha Sahoo" },
+        { "time": "16:30-17:30", "subject": "Relational and Distributed Databases (PR) [CUCS1005]", "room": "216", "faculty": "Mrs. Roseleen Anjum" }
     ],
     "friday": [
         { "time": "09:30-10:30", "subject": "—", "room": "—", "faculty": "—" },
-        { "time": "10:30-11:30", "subject": "Design and Analysis of Algorithms (PP)", "room": "305", "faculty": "Mr. Chitta Ranjan Behera" },
+        { "time": "10:30-11:30", "subject": "Design and Analysis of Algorithms (PP) [CUCS1003]", "room": "305", "faculty": "Mr. Chitta Ranjan Behera" },
         { "time": "11:30-12:30", "subject": "Mentoring / Production House Visit", "room": "—", "faculty": "Mentor" },
         { "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
-        { "time": "13:30-14:30", "subject": "Industrial IOT and Automation (PR)", "room": "313", "faculty": "Mr. Gautam Modak" },
-        { "time": "14:30-15:30", "subject": "Industrial IOT and Automation (TUT)", "room": "305", "faculty": "Mr. Gautam Modak" },
+        { "time": "13:30-14:30", "subject": "Industrial IOT and Automation (PR) [CUTM1017]", "room": "313", "faculty": "Mr. Gautam Modak" },
+        { "time": "14:30-15:30", "subject": "Industrial IOT and Automation (TUT) [CUTM1017]", "room": "305", "faculty": "Mr. Gautam Modak" },
         { "time": "15:30-16:30", "subject": "Skill Course (PR)", "room": "--(Subject Specific)--", "faculty": "N/A" },
         { "time": "16:30-17:30", "subject": "Skill Course (PR)", "room": "--(Subject Specific)--", "faculty": "N/A" }
     ],
     "saturday": [
-        { "time": "09:30-10:30", "subject": "Design and Analysis of Algorithms (PP)", "room": "306", "faculty": "Mr. Chitta Ranjan Behera" },
-        { "time": "10:30-11:30", "subject": "Industrial IOT and Automation (PR)", "room": "220", "faculty": "Mr. Gautam Modak" },
-        { "time": "11:30-12:30", "subject": "Industrial IOT and Automation (PR)", "room": "220", "faculty": "Mr. Gautam Modak" },
+        { "time": "09:30-10:30", "subject": "Design and Analysis of Algorithms (PP) [CUCS1003]", "room": "306", "faculty": "Mr. Chitta Ranjan Behera" },
+        { "time": "10:30-11:30", "subject": "Industrial IOT and Automation (PR) [CUTM1017]", "room": "220", "faculty": "Mr. Gautam Modak" },
+        { "time": "11:30-12:30", "subject": "Industrial IOT and Automation (PR) [CUTM1017]", "room": "220", "faculty": "Mr. Gautam Modak" },
         { "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
         { "time": "13:30-14:30", "subject": "Skill Course (TUT)", "room": "--(Subject Specific)--", "faculty": "N/A" },
         { "time": "14:30-15:30", "subject": "Skill Course (TUT)", "room": "--(Subject Specific)--", "faculty": "N/A" },
-        { "time": "15:30-16:30", "subject": "Software Engineering and Testing (PR)", "room": "115", "faculty": "Ms. Swayansudha Sahoo" },
-        { "time": "16:30-17:30", "subject": "Software Engineering and Testing (PR)", "room": "115", "faculty": "Ms. Swayansudha Sahoo" }
+        { "time": "15:30-16:30", "subject": "Software Engineering and Testing (PR) [CUCS1011]", "room": "115", "faculty": "Ms. Swayansudha Sahoo" },
+        { "time": "16:30-17:30", "subject": "Software Engineering and Testing (PR) [CUCS1011]", "room": "115", "faculty": "Ms. Swayansudha Sahoo" }
     ]
 }
