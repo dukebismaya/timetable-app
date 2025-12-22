@@ -1,11 +1,11 @@
 {
     "monday": [
-        { "time": "09:30-10:30", "subject": "Probability & Statistics (PP)", "room": "218", "faculty": "Mr. Bhirab ku Maji" },
+        { "time": "09:30-10:30", "subject": "Probability & Statistics (PP) [CUTM1005]", "room": "218", "faculty": "Mr. Bhirab ku Maji" },
         { "time": "10:30-11:30", "subject": "Relational and Distributed Databases (PR) [CUCS1005]", "room": "304", "faculty": "Mrs. Roseleen Anjum" },
         { "time": "11:30-12:30", "subject": "Relational and Distributed Databases (PR) [CUCS1005]", "room": "304", "faculty": "Mrs. Roseleen Anjum" },
         { "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
         { "time": "13:30-14:30", "subject": "Design and Analysis of Algorithms (PP) [CUCS1003]", "room": "308", "faculty": "Mr. Chitta Ranjan Behera" },
-        { "time": "14:30-15:30", "subject": "Relational and Distributed Databases (PP) [CUCS1005]", "room": "218", "faculty": "Mrs. Roseleen Anjum" },
+        { "time": "14:30-15:30", "subject": "Industrial IOT and Automation (PP) [CUTM1017]", "room": "111", "faculty": "Mr. Gautam Modak" },
         { "time": "15:30-16:30", "subject": "Design and Analysis of Algorithms (PR) [CUCS1003]", "room": "215", "faculty": "Mr. Chitta Ranjan Behera" },
         { "time": "16:30-17:30", "subject": "Design and Analysis of Algorithms (PR) [CUCS1003]", "room": "215", "faculty": "Mr. Chitta Ranjan Behera" }
     ],
@@ -20,7 +20,7 @@
         { "time": "16:30-17:30", "subject": "Software Engineering and Testing (PR) [CUCS1011]", "room": "213", "faculty": "Ms. Swayansudha Sahoo" }
     ],
     "wednesday": [
-        { "time": "09:30-10:30", "subject": "Probability & Statistics (PP)", "room": "220", "faculty": "Mr. Bhirab ku Maji" },
+        { "time": "09:30-10:30", "subject": "Probability & Statistics (PP) [CUTM1005]", "room": "220", "faculty": "Mr. Bhirab ku Maji" },
         { "time": "10:30-11:30", "subject": "—", "room": "—", "faculty": "—" },
         { "time": "11:30-12:30", "subject": "Relational and Distributed Databases (PR) [CUCS1005]", "room": "115", "faculty": "Mrs. Roseleen Anjum" },
         { "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
@@ -30,7 +30,7 @@
         { "time": "16:30-17:30", "subject": "Skill Course (PR)", "room": "--(Subject Specific)--", "faculty": "N/A" }
     ],
     "thursday": [
-        { "time": "09:30-10:30", "subject": "Probability & Statistics (TUT)", "room": "218", "faculty": "Mr. Bhirab ku Maji" },
+        { "time": "09:30-10:30", "subject": "Probability & Statistics (TUT) [CUTM1005]", "room": "218", "faculty": "Mr. Bhirab ku Maji" },
         { "time": "10:30-11:30", "subject": "—", "room": "—", "faculty": "—" },
         { "time": "11:30-12:30", "subject": "Job Readiness (PR)", "room": "—", "faculty": "Placement Team" },
         { "time": "12:30-13:30", "subject": "Lunch Break", "room": "—", "faculty": "—" },
